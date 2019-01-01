@@ -25,7 +25,7 @@ namespace Tests
         public void Instruction(string input)
         {
             var tokenList = Tokenizer.Create().Tokenize(input);
-            var parsed = Parsers.Instruction.Parse(tokenList);
+            var parsed = Parsers.Sentence.Parse(tokenList);
         }
     }
 }

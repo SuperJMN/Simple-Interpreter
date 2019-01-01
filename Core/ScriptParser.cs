@@ -65,7 +65,7 @@ namespace Core
         {
             var trimmed = read.Trim();
 
-            trimmed = Regex.Replace(trimmed, @"\s+=\s+", "");
+            trimmed = Regex.Replace(trimmed, @"\s+=\s+", "=");
 
             if (trimmed.StartsWith("PatchCode") || trimmed.StartsWith("EndPatch"))
             {

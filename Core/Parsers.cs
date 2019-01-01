@@ -2,6 +2,7 @@
 using System.Net.Sockets;
 using System.Runtime.InteropServices.ComTypes;
 using Superpower;
+using Superpower.Model;
 using Superpower.Parsers;
 
 namespace Core
@@ -39,8 +40,16 @@ namespace Core
         
         public static TokenListParser<LangToken, Command> PatchCommand =>
             from code in Token.EqualTo(LangToken.Code)
-            select (Command) new PatchCommand(code.ToStringValue());
-            
+            select (Command) new PatchCommand(ExtractCode(code));
+
+        private static string ExtractCode(Token<LangToken> code)
+        {
+            return code.ToStringValue()
+                .Replace("PatchCode", "")
+                .Replace("EndPatch", "")
+                .Trim();
+        }
+
         public static TokenListParser<LangToken, Command> RegularCommand =>
             from name in Text
             from args in Arguments
@@ -50,7 +59,7 @@ namespace Core
 
         public static TokenListParser<LangToken, string> Label => Text.Then(s => Token.EqualTo(LangToken.Colon).Select(x => s));
 
-        public static TokenListParser<LangToken, Sentence> Instruction =>
+        public static TokenListParser<LangToken, Sentence> Sentence =>
             from cmd in LabelSentence.Try().Or(CommandSentence)
             select cmd;
 
@@ -59,7 +68,8 @@ namespace Core
         private static TokenListParser<LangToken, Sentence> CommandSentence => Command.Select(x => (Sentence)new CommandSentence(x));
 
         public static TokenListParser<LangToken, Script> Script =>
-            from cmds in Instruction.ManyDelimitedBy(Token.EqualTo(LangToken.NewLine))
+            from cmds in Sentence.ManyDelimitedBy(Token.EqualTo(LangToken.NewLine))
+                .AtEnd()
             select new Script(cmds);
     }
 }

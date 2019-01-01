@@ -8,5 +8,12 @@
         {
             Code = code;
         }
+
+        public override string ToString()
+        {
+            var formattedCode = "\t" + Code.Replace("\n", "\n\t");
+
+            return $"Patch\n{{\n{formattedCode}\n}}";
+        }
     }
 }

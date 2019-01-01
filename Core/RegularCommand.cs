@@ -4,11 +4,18 @@ namespace Core
 {
     public class RegularCommand : Command
     {
-        private readonly ICollection<Argument> arguments;
+        public string Name { get; }
+        public ICollection<Argument> Arguments { get; }
 
         public RegularCommand(string name, ICollection<Argument> arguments)
         {
-            this.arguments = arguments;
+            Name = name;
+            Arguments = arguments;
+        }
+
+        public override string ToString()
+        {
+            return $"{Name}({string.Join(",", Arguments)})";
         }
     }
 }

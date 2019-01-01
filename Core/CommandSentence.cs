@@ -8,5 +8,10 @@
         {
             Command = command;
         }
+
+        public override string ToString()
+        {
+            return $"{Command}";
+        }
     }
 }

@@ -18,7 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="TextFile1.txt">
+    <None Update="Expected.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="FullCode.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
