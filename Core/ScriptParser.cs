@@ -37,9 +37,7 @@ namespace Core
                 }
             }
         }
-
-
-
+        
         private static string Normalize(string str)
         {
             var filtered = RemoveComments(str);
@@ -49,7 +47,7 @@ namespace Core
             var list = Lines(filtered);
             foreach (var line in list.SkipLastN(1))
             {
-                builder.AppendLine(Filter(line));
+                builder.Append(Filter(line) + "\n");
             }
 
             var last = list.LastOrDefault();

@@ -17,15 +17,16 @@ namespace Tests
         }  
         
         [Theory]
-        [InlineData("Something=\"Otra cosa\"")]
-        [InlineData("FindFunctionCall 0x3912ad")]
-        [InlineData("label:")]
-        [InlineData("PatchCode\npatchitoEndPatch")]
-        [InlineData("FindFunctionCall R0=\"ADD R0, SP, #0x7C\" R1=\"MOV R1, R?\"")]
-        public void Instruction(string input)
+        [InlineData("Something", "Something()")]
+        [InlineData("FindFunctionCall 0x3912ad", "FindFunctionCall(0x3912ad)")]
+        [InlineData("label:", "Label \"label\":")]
+        [InlineData("PatchCode\npatchitoEndPatch", "Patch\n{\n\tpatchito\n}")]
+        [InlineData("FindFunctionCall R0=\"ADD R0, SP, #0x7C\" R1=\"MOV R1, R?\"", @"FindFunctionCall(R0=""ADD R0, SP, #0x7C"",R1=""MOV R1, R?"")")]
+        public void Sentence(string input, string expected)
         {
             var tokenList = Tokenizer.Create().Tokenize(input);
-            var parsed = Parsers.Sentence.Parse(tokenList);
+            var sentence = Parsers.Sentence.Parse(tokenList);
+            sentence.ToString().Should().Be(expected);
         }
     }
 }

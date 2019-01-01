@@ -2,16 +2,14 @@
 {
     public enum LangToken
     {
-        CodeStart,
-        CodeEnd,
-        DoubleQuote,
         Equal,
-        Word,
+        Identifier,
         Space,
         NewLine,
         Colon,
         Code,
-        RawText,
-        String
+        String,
+        Hex,
+        Number
     }
 }

@@ -14,16 +14,22 @@ namespace Core
             return new TokenizerBuilder<LangToken>()
                 .Match(Span.Regex(@"(?:\r\n|\n)+"), LangToken.NewLine)
                 .Match(Span.Regex(@"\s+"), LangToken.Space)
-                .Match(StringParser, LangToken.String)
+                .Match(HexParser, LangToken.Hex)
+                .Match(Numerics.Integer, LangToken.Number)
+                .Match(QuotedTextParser, LangToken.String)
                 .Match(CodeBlockParser, LangToken.Code)
-                .Match(Character.EqualTo('"'), LangToken.DoubleQuote)
                 .Match(Character.EqualTo('='), LangToken.Equal)
                 .Match(Character.EqualTo(':'), LangToken.Colon)
-                .Match(Span.Regex(@"\w+[\d\w_]*"), LangToken.Word)
+                .Match(Span.Regex(@"\w+[\d\w_]*"), LangToken.Identifier)
                 .Build();
         }
 
-        public static readonly TextParser<TextSpan> StringParser =
+        private static readonly TextParser<TextSpan> HexParser = 
+            from hexHint in Span.EqualToIgnoreCase("0x")
+            from hexValue in Numerics.HexDigits
+            select hexValue;
+
+        public static readonly TextParser<TextSpan> QuotedTextParser =
             from leading in Span.EqualToIgnoreCase("\"")
             from str in Span.Regex(@"(?:(?!\"").)*")
             from trailing in Span.EqualToIgnoreCase("\"")

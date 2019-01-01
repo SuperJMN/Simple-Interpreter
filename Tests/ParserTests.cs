@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Text;
 using Core;
 using FluentAssertions;
 using Xunit;
@@ -27,8 +28,9 @@ namespace Tests
         {
             var scriptParser = new ScriptParser(Tokenizer.Create());
             var parsed = scriptParser.Parse(File.ReadAllText("FullCode.txt"));
-            var expected = File.ReadAllText("Expected.txt");
-            parsed.ToString().Should().Be(expected);
+            var expected = File.ReadAllText("Expected.txt", Encoding.Unicode);
+            var actual = parsed.ToString();
+            actual.Should().Be(expected);
         }       
     }
 }
